@@ -1,4 +1,4 @@
-const APP_VERSION = "v1.3";
+const APP_VERSION = "v1.4";
 
 const statMapping = {
   STR: { raw: "formax", bonus: "modfor", final: "for" },
@@ -124,6 +124,75 @@ const CLASS_TALENTS = {
     "V/ Compétences de voleur"
   ]
 };
+const LANGUAGE_TRANSLATIONS = {
+  "Common": "Commun",
+  "Dwarvish": "Nain",
+  "Elvish": "Elfique",
+  "Goblin": "Gobelin",
+  "Orcish": "Orque",
+  "Draconic": "Draconique",
+  "Diabolic": "Diabolique",
+  "Primordial": "Primordial",
+  "Sylvan": "Sylvain",
+  "Thanian": "Thanien",
+  "Reptilian": "Reptilien",
+  "Merran": "Merran",
+  "Giant": "Géant",
+  "Celestial": "Céleste",
+  "Chaotic": "Chaotique"
+};
+const GEAR_TRANSLATIONS = {
+  // Armes
+  "Dagger": "Dague",
+  "Club": "Gourdin",
+  "Staff": "Bâton",
+  "Shortsword": "Épée courte",
+  "Sword": "Épée",
+  "Longsword": "Épée longue",
+  "Greatsword": "Épée à deux mains",
+  "Axe": "Hache",
+  "Greataxe": "Grande hache",
+  "Mace": "Masse",
+  "Spear": "Lance",
+  "Shortbow": "Arc court",
+  "Longbow": "Arc long",
+  "Crossbow": "Arbalète",
+  "Javelin": "Javeline",
+
+  // Armures
+  "Leather Armor": "Armure de cuir",
+  "Chainmail": "Cotte de mailles",
+  "Plate Mail": "Harnois",
+  "Shield": "Bouclier",
+
+  // Équipement courant
+  "Backpack": "Sac à dos",
+  "Torch": "Torche",
+  "Lantern": "Lanterne",
+  "Oil, flask": "Huile, flasque",
+  "Flask or bottle": "Flasque ou bouteille",
+  "Caltrops (one bag)": "Chausse-trappes (un sac)",
+  "Rope, 60'": "Corde, 18 m",
+  "Rope": "Corde",
+  "Rations": "Rations",
+  "Iron spikes": "Pitons de fer",
+  "Flint and steel": "Silex et amadou",
+  "Crowbar": "Pied-de-biche",
+  "Grappling hook": "Grappin",
+  "Hammer": "Marteau",
+  "Mirror": "Miroir",
+  "Pole, 10'": "Perche, 3 m",
+  "Sack": "Sac",
+  "Waterskin": "Outre",
+  "Bedroll": "Couverture de voyage",
+  "Thieves' tools": "Outils de voleur",
+  "Holy symbol": "Symbole sacré",
+  "Spellbook": "Grimoire",
+  "Ink": "Encre",
+  "Quill": "Plume",
+  "Parchment": "Parchemin",
+  "Chalk": "Craie"
+};
 function translateValue(value, dictionary) {
   if (!value) return "";
 
@@ -180,7 +249,8 @@ function buildLanguageList(languagesText) {
     const id = makeId(index);
 
     xml += `      <${id}>\n`;
-    xml += `        <name type="string">${escapeXml(language)}</name>\n`;
+   const translatedLanguage = translateValue(language, LANGUAGE_TRANSLATIONS);
+    xml += `        <name type="string">${escapeXml(translatedLanguage)}</name>\n`;
     xml += `      </${id}>\n`;
   });
 
@@ -205,7 +275,8 @@ function buildInventoryList(gear) {
     xml += `        <carried type="number">1</carried>\n`;
     xml += `        <count type="number">${quantity}</count>\n`;
     xml += `        <locked type="number">1</locked>\n`;
-    xml += `        <name type="string">${escapeXml(item.name || "Objet")}</name>\n`;
+    const translatedName = translateValue(item.name, GEAR_TRANSLATIONS) || "Objet";
+    xml += `        <name type="string">${escapeXml(translatedName)}</name>\n`;
     xml += `        <weight type="number">${slots}</weight>\n`;
     xml += `      </${id}>\n`;
   });
@@ -545,7 +616,9 @@ xml += `  <character>\n`;
   const firstWeapon = getFirstWeapon(data);
   const firstWeaponName = firstWeapon ? firstWeapon.name : "";
   
-  xml += xmlString("attackname", data.attackname || firstWeaponName || "");
+ const translatedFirstWeaponName = translateValue(firstWeaponName, GEAR_TRANSLATIONS);
+
+  xml += xmlString("attackname", data.attackname || translatedFirstWeaponName || "");
   xml += xmlString("attackname2", data.attackname2 || "");
   xml += xmlString("attackname3", data.attackname3 || "");
   
