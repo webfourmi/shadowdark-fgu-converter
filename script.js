@@ -1,4 +1,4 @@
-const APP_VERSION = "v1.2";
+const APP_VERSION = "v1.3";
 
 const statMapping = {
   STR: { raw: "formax", bonus: "modfor", final: "for" },
@@ -296,36 +296,31 @@ function buildTalents(data) {
     });
   }
 
-  // Talent d’ascendance
   const ancestryTalents = ANCESTRY_TALENTS[data.ancestry] || [];
-
   ancestryTalents.forEach(name => {
     addTalent(name, "Talent d’ascendance.");
   });
 
-  // Talents de classe de niveau 1
   const classTalents = CLASS_TALENTS[data.class] || [];
-
   classTalents.forEach(name => {
     addTalent(name, "Talent de classe.");
   });
 
-  // Talents obtenus aux niveaux, mais on évite les doublons techniques
   if (Array.isArray(data.levels)) {
     data.levels.forEach(levelInfo => {
       const talentName = levelInfo.talentRolledName || "";
       const talentDesc = levelInfo.talentRolledDesc || "";
 
-      // On ignore les choix qui sont en réalité déjà appliqués dans les stats
-      if (talentName.includes("Plus2") || talentName.includes("Stat")) {
-        return;
-      }
+      if (!talentName) return;
+
+      if (talentName.includes("Plus2")) return;
+      if (talentName.includes("Stat")) return;
+      if (talentName.includes("OrPlus1Casting")) return;
 
       addTalent(talentName, talentDesc);
     });
   }
 
-  // Bonus talents, mais on ignore les bonus purement numériques déjà appliqués
   if (Array.isArray(data.bonuses)) {
     data.bonuses.forEach(bonus => {
       if (bonus.sourceCategory !== "Talent") return;
@@ -334,14 +329,11 @@ function buildTalents(data) {
       const bonusTo = bonus.bonusTo || "";
       const bonusLabel = bonus.bonusName || "";
 
-      // Exemple : StatBonus INT:+2 déjà intégré dans les caractéristiques
+      if (!bonusName) return;
+
       if (bonusLabel === "StatBonus") return;
-      if (bonusTo.includes("INT:+2")) return;
-      if (bonusTo.includes("STR:+2")) return;
-      if (bonusTo.includes("DEX:+2")) return;
-      if (bonusTo.includes("CON:+2")) return;
-      if (bonusTo.includes("WIS:+2")) return;
-      if (bonusTo.includes("CHA:+2")) return;
+      if (bonusTo.includes(":+2")) return;
+      if (bonusTo.includes(":+1")) return;
 
       addTalent(bonusName, bonusTo || bonusLabel);
     });
