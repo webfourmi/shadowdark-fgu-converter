@@ -468,12 +468,30 @@ function downloadXml() {
     return;
   }
 
+  let filename = "personnage_shadowdark.xml";
+
+  try {
+    const input = document.getElementById("jsonInput").value;
+    const data = JSON.parse(input);
+
+    const safeName = String(data.name || "personnage")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "_")
+      .replace(/^_+|_+$/g, "");
+
+    filename = `${safeName || "personnage"}_shadowdark.xml`;
+  } catch (error) {
+    filename = "personnage_shadowdark.xml";
+  }
+
   const blob = new Blob([xml], { type: "application/xml" });
   const url = URL.createObjectURL(blob);
 
   const link = document.createElement("a");
   link.href = url;
-  link.download = "personnage_shadowdark.xml";
+  link.download = filename;
   link.click();
 
   URL.revokeObjectURL(url);
