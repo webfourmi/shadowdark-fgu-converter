@@ -7,6 +7,49 @@ const statMapping = {
   CHA: { raw: "chamax", bonus: "modcha", final: "cha" }
 };
 
+// traduction en français
+const ANCESTRY_TRANSLATIONS = {
+  "Human": "Humain",
+  "Dwarf": "Nain",
+  "Elf": "Elfe",
+  "Goblin": "Gobelin",
+  "Half-Orc": "Demi-orc",
+  "Halfling": "Halfelin"
+};
+
+const CLASS_TRANSLATIONS = {
+  "Fighter": "Guerrier",
+  "Priest": "Prêtre",
+  "Thief": "Voleur",
+  "Wizard": "Magicien"
+};
+
+const ALIGNMENT_TRANSLATIONS = {
+  "Lawful": "Loyal",
+  "Chaotic": "Chaotique",
+  "Neutral": "Neutre"
+};
+
+const BACKGROUND_TRANSLATIONS = {
+  "Soldier": "Soldat",
+  "Urchin": "Gamin des rues",
+  "Noble": "Noble",
+  "Outlaw": "Hors-la-loi",
+  "Scholar": "Érudit",
+  "Hunter": "Chasseur",
+  "Sailor": "Marin",
+  "Merchant": "Marchand",
+  "Acolyte": "Acolyte",
+  "Entertainer": "Artiste"
+};
+
+function translateValue(value, dictionary) {
+  if (!value) return "";
+
+  return dictionary[value] || value;
+}
+
+
 function shadowdarkModifier(score) {
   return Math.floor((score - 10) / 2);
 }
@@ -274,12 +317,20 @@ function convertJsonToXml() {
   xml += `    <abilitylist />\n`;
 
   // Identité
-  xml += xmlString("name", data.name || "Personnage sans nom");
-  xml += xmlString("ancestry", data.ancestry || "");
-  xml += xmlString("class", data.class || "");
-  xml += xmlString("appearance", data.appearance || "");
-  xml += xmlNumber("level", data.level || 1);
-  xml += xmlNumber("xp", data.xp || 0);
+  const translatedAncestry = translateValue(data.ancestry, ANCESTRY_TRANSLATIONS);
+const translatedClass = translateValue(data.class, CLASS_TRANSLATIONS);
+const translatedAlignment = translateValue(data.alignment, ALIGNMENT_TRANSLATIONS);
+
+xml += xmlString("name", data.name || "Personnage sans nom");
+xml += xmlString("ancestry", translatedAncestry);
+xml += xmlString("class", translatedClass);
+xml += xmlString("title", data.title || "");
+xml += xmlString("alignment", translatedAlignment);
+xml += xmlString("deity", data.deity || "");
+xml += xmlString("background", translateValue(data.background, BACKGROUND_TRANSLATIONS));
+xml += xmlString("appearance", data.appearance || "");
+xml += xmlNumber("level", data.level || 1);
+xml += xmlNumber("xp", data.XP ?? data.xp ?? 0);
 
   // Défense et PV basiques
   const armorClass = data.ac ?? data.armorClass ?? data.AC ?? 10;
