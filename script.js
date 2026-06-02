@@ -313,8 +313,6 @@ let xml = "";
 xml += `<?xml version="1.0" encoding="utf-8"?>\n`;
 xml += `<root version="5.1" dataversion="20260124" release="0|CoreRPG:7">\n`;
 
-// Nom du personnage pour l'écran d'import FGU
-xml += `  <name type="string">${escapeXml(characterName)}</name>\n`;
 
 xml += `  <character>\n`;
   // Champs techniques et listes vides
@@ -326,7 +324,7 @@ xml += `  <character>\n`;
 const translatedClass = translateValue(data.class, CLASS_TRANSLATIONS);
 const translatedAlignment = translateValue(data.alignment, ALIGNMENT_TRANSLATIONS);
 
-xml += xmlString("name", characterName);
+
 xml += xmlString("ancestry", translatedAncestry);
 xml += xmlString("class", translatedClass);
 xml += xmlString("title", data.title || "");
@@ -379,6 +377,8 @@ xml += xmlNumber("xp", data.XP ?? data.xp ?? 0);
   xml += xmlNumber("modcha", chaMod);
   xml += xmlNumber("cha", chaMod);
   xml += xmlNumber("CHA", chaMod);
+  
+  xml += xmlString("name", characterName);
 
   // Effets temporaires
   xml += xmlNumber("effetfor", 0);
