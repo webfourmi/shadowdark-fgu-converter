@@ -58,3 +58,12 @@ button {
 button:hover {
   background: #e0aa5a;
 }
+.version {
+  display: inline-block;
+  padding: 6px 10px;
+  background: #3a2b1c;
+  color: #f5c06a;
+  border: 1px solid #8f6a3a;
+  border-radius: 6px;
+  font-weight: bold;
+}
