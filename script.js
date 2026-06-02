@@ -1,4 +1,4 @@
-const APP_VERSION = "v1.4";
+const APP_VERSION = "v1.6";
 
 const statMapping = {
   STR: { raw: "formax", bonus: "modfor", final: "for" },
@@ -193,6 +193,49 @@ const GEAR_TRANSLATIONS = {
   "Parchment": "Parchemin",
   "Chalk": "Craie"
 };
+
+const SPELL_TRANSLATIONS = {
+  "Alarm": "ALARME",
+  "Alter Self": "ALTÉRATION PHYSIQUE",
+  "Anchor Object": "ANCRAGE D’OBJET",
+
+  "Mage Armor": "ARMURE DE MAGE",
+  "Armor of Faith": "BOUCLIER DE LA FOI",
+  "Holy Weapon": "ARME SACRÉE",
+  "Augury": "AUGURE",
+  "Bless": "BÉNÉDICTION",
+  "Charm Person": "CHARME-PERSONNE",
+
+  "Feather Fall": "CHUTE DE PLUME",
+  "Chastisement": "CHÂTIMENT",
+  "Floating Disk": "DISQUE FLOTTANT",
+  "Detect Magic": "DÉTECTION DE LA MAGIE",
+  "Detect Thoughts": "DÉTECTION DES PENSÉES",
+  "Hold Portal": "FERMETURE",
+
+  "Acid Arrow": "FLÈCHE ACIDE",
+  "Cure Wounds": "GUÉRISON DES BLESSURES",
+  "Mirror Image": "IMAGE MIROIR",
+  "Invisibility": "INVISIBILITÉ",
+  "Light": "LUMIÈRE",
+  "Levitate": "LÉVITATION",
+  "Burning Hands": "MAINS BRÛLANTES",
+
+  "Mistwalk": "MARCHE DES BRUMES",
+  "Knock": "OUVERTURE",
+  "Hold Person": "PARALYSIE",
+  "Magic Missile": "PROJECTILE MAGIQUE",
+  "Protection from Evil": "PROTECTION CONTRE LE MAL",
+  "Turn Undead": "RENVOI DES MORTS-VIVANTS",
+  "Silence": "SILENCE",
+  "Sleep": "SOMMEIL",
+  "Web": "TOILE D’ARAIGNÉE",
+  "Zone of Truth": "ZONE DE VÉRITÉ",
+
+  "Deafen": "AVEUGLER/ASSOURDIR",
+  "Blind/Deafen": "AVEUGLER/ASSOURDIR",
+  "Blindness/Deafness": "AVEUGLER/ASSOURDIR"
+};
 function translateValue(value, dictionary) {
   if (!value) return "";
 
@@ -336,7 +379,10 @@ function buildSpellsFromBonuses(bonuses, spellsKnownText) {
     xml += `          <recordname />\n`;
     xml += `        </linkspell>\n`;
     xml += `        <locked type="number">1</locked>\n`;
-    xml += `        <name type="string">${escapeXml(spell.name)}</name>\n`;
+    const translatedSpellName = translateValue(spell.name, SPELL_TRANSLATIONS);
+    const markedSpellName = markSpellToReplace(translatedSpellName);
+
+    xml += `        <name type="string">${escapeXml(markedSpellName)}</name>\n`;
     xml += `        <NumberField1 type="number">0</NumberField1>\n`;
     xml += `        <NumberField2 type="number">0</NumberField2>\n`;
     xml += `        <spellrank type="number">${Number(spell.rank || 1)}</spellrank>\n`;
@@ -347,6 +393,7 @@ function buildSpellsFromBonuses(bonuses, spellsKnownText) {
 
   return xml;
 }
+
 
 function buildTalents(data) {
   const talents = [];
@@ -430,7 +477,8 @@ function buildTalents(data) {
     xml += `          <class>talent_card</class>\n`;
     xml += `          <recordname />\n`;
     xml += `        </linktalent>\n`;
-    xml += `        <name type="string">${escapeXml(talent.name)}</name>\n`;
+    const markedTalentName = markTalentToReplace(talent.name);
+    xml += `        <name type="string">${escapeXml(markedTalentName)}</name>\n`;
     xml += `      </${id}>\n`;
   });
 
@@ -439,26 +487,27 @@ function buildTalents(data) {
   return xml;
 }
 
-function buildNotes(data, translatedAlignment, translatedBackground) {
-  const lines = [];
+function markTalentToReplace(talentName) {
+  if (!talentName) return "";
 
-  if (data.deity) {
-    lines.push(`Divinité : ${data.deity}`);
+  const cleanName = String(talentName).trim();
+
+  if (cleanName.startsWith("★")) {
+    return cleanName;
   }
 
-  if (translatedAlignment) {
-    lines.push(`Alignement : ${translatedAlignment}`);
+  return "★ " + cleanName;
+}
+function markSpellToReplace(spellName) {
+  if (!spellName) return "";
+
+  const cleanName = String(spellName).trim();
+
+  if (cleanName.startsWith("★")) {
+    return cleanName;
   }
 
-  if (translatedBackground) {
-    lines.push(`Origines : ${translatedBackground}`);
-  }
-
-  if (data.title) {
-    lines.push(`Titre : ${translateValue(data.title, TITLE_TRANSLATIONS)}`);
-  }
-
-  return lines.join("\\n");
+  return "★ " + cleanName;
 }
 
 function getFirstWeapon(data) {
@@ -707,7 +756,7 @@ xml += `  <character>\n`;
   xml += buildTalents(data);
 
    // Champs divers présents dans ton ruleset
-  xml += xmlString("notes", buildNotes(data, translatedAlignment, translatedBackground));
+  
   xml += xmlFormattedText("FormattedText1", "");
   xml += xmlNumber("NumberField1", 0);
   xml += xmlNumber("NumberField2", 0);
