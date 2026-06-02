@@ -1,3 +1,5 @@
+const APP_VERSION = "v1.1";
+
 const statMapping = {
   STR: { raw: "formax", bonus: "modfor", final: "for" },
   DEX: { raw: "dexmax", bonus: "moddex", final: "dex" },
