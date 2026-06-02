@@ -1,4 +1,4 @@
-const APP_VERSION = "v1.1";
+const APP_VERSION = "v1.2";
 
 const statMapping = {
   STR: { raw: "formax", bonus: "modfor", final: "for" },
@@ -33,16 +33,67 @@ const ALIGNMENT_TRANSLATIONS = {
 };
 
 const BACKGROUND_TRANSLATIONS = {
-  "Soldier": "Soldat",
   "Urchin": "Gamin des rues",
-  "Noble": "Noble",
-  "Outlaw": "Hors-la-loi",
-  "Scholar": "Érudit",
-  "Hunter": "Chasseur",
+  "Wanted": "Recherché",
+  "Cult Initiate": "Initié d’une secte",
+  "Thieves' Guild": "Guilde des voleurs",
+  "Thieves Guild": "Guilde des voleurs",
+  "Banished": "Banni",
+  "Orphaned": "Orphelin",
+  "Wizard's Apprentice": "Apprenti magicien",
+  "Wizards Apprentice": "Apprenti magicien",
+  "Jeweler": "Joaillier",
+  "Herbalist": "Herboriste",
+  "Barbarian": "Barbare",
+  "Mercenary": "Mercenaire",
   "Sailor": "Marin",
-  "Merchant": "Marchand",
   "Acolyte": "Acolyte",
-  "Entertainer": "Artiste"
+  "Soldier": "Soldat",
+  "Forester": "Forestier",
+  "Scout": "Éclaireur",
+  "Minstrel": "Ménestrel",
+  "Scholar": "Érudit",
+  "Noble": "Noble",
+  "Chirurgeon": "Chirurgien"
+};
+
+const TITLE_TRANSLATIONS = {
+  "Shaman": "Chaman",
+  "Warrior": "Guerrier",
+  "Knight": "Chevalier",
+  "Champion": "Champion",
+  "Warlord": "Seigneur de guerre",
+  "Gladiator": "Gladiateur",
+  "Veteran": "Vétéran",
+  "Soldier": "Soldat",
+
+  "Acolyte": "Acolyte",
+  "Priest": "Prêtre",
+  "Oracle": "Oracle",
+  "Prophet": "Prophète",
+  "Saint": "Saint",
+  "Exorcist": "Exorciste",
+  "Templar": "Templier",
+
+  "Thief": "Voleur",
+  "Rogue": "Roublard",
+  "Burglar": "Cambrioleur",
+  "Cutpurse": "Coupe-bourse",
+  "Assassin": "Assassin",
+  "Spy": "Espion",
+  "Master Thief": "Maître voleur",
+
+  "Wizard": "Magicien",
+  "Mage": "Mage",
+  "Magician": "Magicien",
+  "Sorcerer": "Sorcier",
+  "Warlock": "Occultiste",
+  "Witch": "Sorcière",
+  "Enchanter": "Enchanteur",
+  "Conjurer": "Invocateur",
+  "Necromancer": "Nécromancien",
+  "Seer": "Voyant",
+  "Sage": "Sage"
 };
 
 function translateValue(value, dictionary) {
@@ -272,7 +323,7 @@ function buildNotes(data, translatedAlignment, translatedBackground) {
   }
 
   if (data.title) {
-    lines.push(`Titre : ${data.title}`);
+    lines.push(`Titre : ${translateValue(data.title, TITLE_TRANSLATIONS)}`);
   }
 
   return lines.join("\\n");
@@ -348,16 +399,17 @@ xml += `  <character>\n`;
   const translatedClass = translateValue(data.class, CLASS_TRANSLATIONS);
   const translatedAlignment = translateValue(data.alignment, ALIGNMENT_TRANSLATIONS);
   const translatedBackground = translateValue(data.background, BACKGROUND_TRANSLATIONS);
+  const translatedTitle = translateValue(data.title, TITLE_TRANSLATIONS);
 
   const characterTitle = data.title || "";
   const characterDeity = data.deity || "";
 
   xml += xmlString("ancestry", translatedAncestry);
   xml += xmlString("class", translatedClass);
-  xml += xmlString("title", characterTitle);
+  xml += xmlString("title", translatedTitle);
   xml += xmlString("alignment", translatedAlignment);
   xml += xmlString("background", translatedBackground);
-  xml += xmlString("deity", characterDeity);
+  xml += xmlString("deity", data.deity || "");
   xml += xmlString("appearance", data.appearance || "");
   xml += xmlNumber("level", data.level || 1);
   xml += xmlNumber("xp", data.XP ?? data.xp ?? 0);
