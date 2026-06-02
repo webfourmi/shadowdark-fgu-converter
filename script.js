@@ -27,6 +27,212 @@ function xmlString(name, value) {
 function xmlNumber(name, value) {
   return `    <${name} type="number">${Number(value) || 0}</${name}>\n`;
 }
+function xmlDice(name, value) {
+  return `    <${name} type="dice">${escapeXml(value)}</${name}>\n`;
+}
+function makeId(index) {
+  return "id-" + String(index + 1).padStart(5, "0");
+}
+
+function splitCommaList(value) {
+  if (!value) return [];
+
+  return String(value)
+    .split(",")
+    .map(item => item.trim())
+    .filter(item => item.length > 0);
+}
+
+function buildLanguageList(languagesText) {
+  const languages = splitCommaList(languagesText);
+
+  if (languages.length === 0) {
+    return `    <languagelist />\n`;
+  }
+
+  let xml = `    <languagelist>\n`;
+
+  languages.forEach((language, index) => {
+    const id = makeId(index);
+
+    xml += `      <${id}>\n`;
+    xml += `        <name type="string">${escapeXml(language)}</name>\n`;
+    xml += `      </${id}>\n`;
+  });
+
+  xml += `    </languagelist>\n`;
+
+  return xml;
+}
+
+function buildInventoryList(gear) {
+  if (!Array.isArray(gear) || gear.length === 0) {
+    return `    <inventorylist />\n`;
+  }
+
+  let xml = `    <inventorylist>\n`;
+
+  gear.forEach((item, index) => {
+    const id = makeId(index);
+    const quantity = Number(item.quantity ?? 1);
+    const slots = Number(item.slots ?? 0);
+
+    xml += `      <${id}>\n`;
+    xml += `        <carried type="number">1</carried>\n`;
+    xml += `        <count type="number">${quantity}</count>\n`;
+    xml += `        <locked type="number">1</locked>\n`;
+    xml += `        <name type="string">${escapeXml(item.name || "Objet")}</name>\n`;
+    xml += `        <weight type="number">${slots}</weight>\n`;
+    xml += `      </${id}>\n`;
+  });
+
+  xml += `    </inventorylist>\n`;
+
+  return xml;
+}
+
+function buildSpellsFromBonuses(bonuses, spellsKnownText) {
+  let spells = [];
+
+  if (Array.isArray(bonuses)) {
+    bonuses.forEach(bonus => {
+      const isSpell =
+        bonus.sourceCategory === "Ability" &&
+        String(bonus.name || "").startsWith("Spell:");
+
+      if (isSpell && bonus.bonusName) {
+        const tierMatch = String(bonus.bonusTo || "").match(/Tier:(\d+)/);
+        const tier = tierMatch ? Number(tierMatch[1]) : 1;
+
+        spells.push({
+          name: bonus.bonusName,
+          rank: tier
+        });
+      }
+    });
+  }
+
+  // Sécurité : si les sorts ne sont pas trouvés dans bonuses,
+  // on utilise spellsKnown.
+  if (spells.length === 0) {
+    spells = splitCommaList(spellsKnownText).map(name => ({
+      name,
+      rank: 1
+    }));
+  }
+
+  if (spells.length === 0) {
+    return `    <sorts />\n`;
+  }
+
+  let xml = `    <sorts>\n`;
+
+  spells.forEach((spell, index) => {
+    const id = makeId(index);
+
+    xml += `      <${id}>\n`;
+    xml += `        <ComboBox1 type="string"></ComboBox1>\n`;
+    xml += `        <ComboBox2 type="string"></ComboBox2>\n`;
+    xml += `        <FormattedText1 type="formattedtext">\n`;
+    xml += `          <p />\n`;
+    xml += `        </FormattedText1>\n`;
+    xml += `        <linkspell type="windowreference">\n`;
+    xml += `          <class>sort_card</class>\n`;
+    xml += `          <recordname />\n`;
+    xml += `        </linkspell>\n`;
+    xml += `        <locked type="number">1</locked>\n`;
+    xml += `        <name type="string">${escapeXml(spell.name)}</name>\n`;
+    xml += `        <NumberField1 type="number">0</NumberField1>\n`;
+    xml += `        <NumberField2 type="number">0</NumberField2>\n`;
+    xml += `        <spellrank type="number">${Number(spell.rank || 1)}</spellrank>\n`;
+    xml += `      </${id}>\n`;
+  });
+
+  xml += `    </sorts>\n`;
+
+  return xml;
+}
+
+function buildTalents(data) {
+  const talents = [];
+
+  if (Array.isArray(data.levels)) {
+    data.levels.forEach(levelInfo => {
+      if (levelInfo.talentRolledName) {
+        talents.push({
+          name: levelInfo.talentRolledName,
+          text: levelInfo.talentRolledDesc || ""
+        });
+      }
+    });
+  }
+
+  if (Array.isArray(data.bonuses)) {
+    data.bonuses.forEach(bonus => {
+      if (bonus.sourceCategory === "Talent" && bonus.name) {
+        const alreadyExists = talents.some(talent => talent.name === bonus.name);
+
+        if (!alreadyExists) {
+          talents.push({
+            name: bonus.name,
+            text: bonus.bonusTo || bonus.bonusName || ""
+          });
+        }
+      }
+    });
+  }
+
+  if (talents.length === 0) {
+    return `    <talents />\n`;
+  }
+
+  let xml = `    <talents>\n`;
+
+  talents.forEach((talent, index) => {
+    const id = makeId(index);
+
+    xml += `      <${id}>\n`;
+    xml += `        <Checkbox1 type="number">0</Checkbox1>\n`;
+    xml += `        <Checkbox2 type="number">0</Checkbox2>\n`;
+    xml += `        <Checkbox3 type="number">0</Checkbox3>\n`;
+    xml += `        <FormattedText1 type="formattedtext">\n`;
+    xml += `          <p>${escapeXml(talent.text || "")}</p>\n`;
+    xml += `        </FormattedText1>\n`;
+    xml += `        <linktalent type="windowreference">\n`;
+    xml += `          <class>talent_card</class>\n`;
+    xml += `          <recordname />\n`;
+    xml += `        </linktalent>\n`;
+    xml += `        <name type="string">${escapeXml(talent.name)}</name>\n`;
+    xml += `      </${id}>\n`;
+  });
+
+  xml += `    </talents>\n`;
+
+  return xml;
+}
+
+function getFirstWeapon(data) {
+  if (!Array.isArray(data.gear)) return null;
+
+  return data.gear.find(item => item.type === "weapon") || null;
+}
+
+function getWeaponDamageDie(weaponName) {
+  const name = String(weaponName || "").toLowerCase();
+
+  if (name.includes("dagger")) return "d4";
+  if (name.includes("staff")) return "d4";
+  if (name.includes("club")) return "d4";
+  if (name.includes("shortsword")) return "d6";
+  if (name.includes("sword")) return "d8";
+  if (name.includes("axe")) return "d8";
+  if (name.includes("mace")) return "d6";
+  if (name.includes("spear")) return "d6";
+  if (name.includes("bow")) return "d6";
+  if (name.includes("crossbow")) return "d6";
+
+  return "d6";
+}
 
 function convertJsonToXml() {
   const input = document.getElementById("jsonInput").value;
@@ -224,9 +430,7 @@ function convertJsonToXml() {
   output.value = xml;
 }
 
-function xmlDice(name, value) {
-  return `    <${name} type="dice">${escapeXml(value)}</${name}>\n`;
-}
+
 
 function xmlFormattedText(name, value) {
   const safeValue = escapeXml(value || "");
