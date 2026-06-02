@@ -67,3 +67,24 @@ button:hover {
   border-radius: 6px;
   font-weight: bold;
 }
+.info-box {
+  margin: 20px 0;
+  padding: 15px;
+  background: #2a2118;
+  border: 1px solid #8f6a3a;
+  border-radius: 8px;
+}
+
+.info-box h2 {
+  margin-top: 0;
+  color: #f5c06a;
+}
+
+.info-box pre {
+  padding: 10px;
+  background: #fff8ea;
+  color: #1d1712;
+  border-radius: 6px;
+  font-weight: bold;
+  overflow-x: auto;
+}
