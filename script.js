@@ -256,6 +256,28 @@ function buildTalents(data) {
   return xml;
 }
 
+function buildNotes(data, translatedAlignment, translatedBackground) {
+  const lines = [];
+
+  if (data.deity) {
+    lines.push(`Divinité : ${data.deity}`);
+  }
+
+  if (translatedAlignment) {
+    lines.push(`Alignement : ${translatedAlignment}`);
+  }
+
+  if (translatedBackground) {
+    lines.push(`Origines : ${translatedBackground}`);
+  }
+
+  if (data.title) {
+    lines.push(`Titre : ${data.title}`);
+  }
+
+  return lines.join("\\n");
+}
+
 function getFirstWeapon(data) {
   if (!Array.isArray(data.gear)) return null;
 
@@ -323,19 +345,22 @@ xml += `  <character>\n`;
 
   // Identité
   const translatedAncestry = translateValue(data.ancestry, ANCESTRY_TRANSLATIONS);
-const translatedClass = translateValue(data.class, CLASS_TRANSLATIONS);
-const translatedAlignment = translateValue(data.alignment, ALIGNMENT_TRANSLATIONS);
+  const translatedClass = translateValue(data.class, CLASS_TRANSLATIONS);
+  const translatedAlignment = translateValue(data.alignment, ALIGNMENT_TRANSLATIONS);
+  const translatedBackground = translateValue(data.background, BACKGROUND_TRANSLATIONS);
 
+  const characterTitle = data.title || "";
+  const characterDeity = data.deity || "";
 
-xml += xmlString("ancestry", translatedAncestry);
-xml += xmlString("class", translatedClass);
-xml += xmlString("title", data.title || "");
-xml += xmlString("alignment", translatedAlignment);
-xml += xmlString("deity", data.deity || "");
-xml += xmlString("background", translateValue(data.background, BACKGROUND_TRANSLATIONS));
-xml += xmlString("appearance", data.appearance || "");
-xml += xmlNumber("level", data.level || 1);
-xml += xmlNumber("xp", data.XP ?? data.xp ?? 0);
+  xml += xmlString("ancestry", translatedAncestry);
+  xml += xmlString("class", translatedClass);
+  xml += xmlString("title", characterTitle);
+  xml += xmlString("alignment", translatedAlignment);
+  xml += xmlString("background", translatedBackground);
+  xml += xmlString("deity", characterDeity);
+  xml += xmlString("appearance", data.appearance || "");
+  xml += xmlNumber("level", data.level || 1);
+  xml += xmlNumber("xp", data.XP ?? data.xp ?? 0);
 
   // Défense et PV basiques
   const armorClass = data.ac ?? data.armorClass ?? data.AC ?? 10;
@@ -495,7 +520,8 @@ xml += xmlNumber("xp", data.XP ?? data.xp ?? 0);
   xml += buildSpellsFromBonuses(data.bonuses, data.spellsKnown);
   xml += buildTalents(data);
 
-  // Champs divers présents dans ton ruleset
+   // Champs divers présents dans ton ruleset
+  xml += xmlString("notes", buildNotes(data, translatedAlignment, translatedBackground));
   xml += xmlFormattedText("FormattedText1", "");
   xml += xmlNumber("NumberField1", 0);
   xml += xmlNumber("NumberField2", 0);
@@ -559,3 +585,10 @@ function clearAll() {
   document.getElementById("jsonInput").value = "";
   document.getElementById("xmlOutput").value = "";
 }
+document.addEventListener("DOMContentLoaded", () => {
+  const versionElement = document.getElementById("appVersion");
+
+  if (versionElement) {
+    versionElement.textContent = APP_VERSION;
+  }
+});
