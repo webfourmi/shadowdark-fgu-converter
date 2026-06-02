@@ -1,4 +1,4 @@
-const APP_VERSION = "v1.7";
+const APP_VERSION = "v1.8";
 
 const statMapping = {
   STR: { raw: "formax", bonus: "modfor", final: "for" },
@@ -201,6 +201,7 @@ const SPELL_TRANSLATIONS = {
 
   "Mage Armor": "ARMURE DE MAGE",
   "Armor of Faith": "BOUCLIER DE LA FOI",
+  "Shield of Faith": "BOUCLIER DE LA FOI",
   "Holy Weapon": "ARME SACRÉE",
   "Augury": "AUGURE",
   "Bless": "BÉNÉDICTION",
@@ -235,6 +236,23 @@ const SPELL_TRANSLATIONS = {
   "Deafen": "AVEUGLER/ASSOURDIR",
   "Blind/Deafen": "AVEUGLER/ASSOURDIR",
   "Blindness/Deafness": "AVEUGLER/ASSOURDIR"
+};
+
+const DEITY_TRANSLATIONS = {
+  "Ord": "Ord",
+  "Madeera": "Madeera",
+  "Memnon": "Memnon",
+  "Ramlaat": "Ramlaat",
+  "Shune": "Shune",
+  "Gede": "Gede",
+
+  "Saint Terragnis": "Saint Terragnis",
+  "St. Terragnis": "Saint Terragnis",
+  "St Terragnis": "Saint Terragnis",
+
+  "None": "",
+  "No Deity": "",
+  "": ""
 };
 function translateValue(value, dictionary) {
   if (!value) return "";
@@ -581,6 +599,7 @@ xml += `  <character>\n`;
   const translatedAlignment = translateValue(data.alignment, ALIGNMENT_TRANSLATIONS);
   const translatedBackground = translateValue(data.background, BACKGROUND_TRANSLATIONS);
   const translatedTitle = translateValue(data.title, TITLE_TRANSLATIONS);
+  const translatedDeity = translateValue(data.deity, DEITY_TRANSLATIONS);
 
   const characterTitle = data.title || "";
   const characterDeity = data.deity || "";
@@ -590,7 +609,7 @@ xml += `  <character>\n`;
   xml += xmlString("title", translatedTitle);
   xml += xmlString("alignment", translatedAlignment);
   xml += xmlString("background", translatedBackground);
-  xml += xmlString("deity", data.deity || "");
+  xml += xmlString("deity", translatedDeity);
   xml += xmlString("appearance", data.appearance || "");
   xml += xmlNumber("level", data.level || 1);
   xml += xmlNumber("xp", data.XP ?? data.xp ?? 0);
