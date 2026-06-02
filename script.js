@@ -21,11 +21,11 @@ function escapeXml(value) {
 }
 
 function xmlString(name, value) {
-  return `      <${name} type="string">${escapeXml(value)}</${name}>\n`;
+  return `    <${name} type="string">${escapeXml(value)}</${name}>\n`;
 }
 
 function xmlNumber(name, value) {
-  return `      <${name} type="number">${Number(value) || 0}</${name}>\n`;
+  return `    <${name} type="number">${Number(value) || 0}</${name}>\n`;
 }
 
 function convertJsonToXml() {
@@ -44,8 +44,7 @@ function convertJsonToXml() {
   let xml = "";
   xml += `<?xml version="1.0" encoding="utf-8"?>\n`;
   xml += `<root>\n`;
-  xml += `  <charsheet>\n`;
-  xml += `    <id-00001>\n`;
+  xml += `  <character>\n`;
 
   xml += xmlString("name", data.name || "Personnage sans nom");
   xml += xmlString("ancestry", data.ancestry || "");
@@ -64,9 +63,8 @@ function convertJsonToXml() {
     xml += xmlNumber(fields.final, modifier);
   }
 
-  xml += `    </id-00001>\n`;
-  xml += `  </charsheet>\n`;
-  xml += `</root>\n`;
+ xml += `  </character>\n`;
+ xml += `</root>\n`;
 
   output.value = xml;
 }
