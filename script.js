@@ -282,9 +282,13 @@ function convertJsonToXml() {
   xml += xmlNumber("xp", data.xp || 0);
 
   // Défense et PV basiques
-  xml += xmlNumber("ac", data.ac || 10);
-  xml += xmlNumber("hpcurrent", data.hpcurrent || data.hpmax || 1);
-  xml += xmlNumber("hpmax", data.hpmax || 1);
+  const armorClass = data.ac ?? data.armorClass ?? data.AC ?? 10;
+  const hpMax = data.hpmax ?? data.hpMax ?? data.maxHitPoints ?? data.hitPoints ?? data.hp ?? 1;
+  const hpCurrent = data.hpcurrent ?? data.hpCurrent ?? hpMax;
+  
+  xml += xmlNumber("ac", armorClass);
+  xml += xmlNumber("hpcurrent", hpCurrent);
+  xml += xmlNumber("hpmax", hpMax);
   xml += xmlNumber("fatal", data.fatal || 4);
 
   // Caractéristiques : valeurs brutes, modificateurs et champs doublés
@@ -342,10 +346,14 @@ function convertJsonToXml() {
   xml += xmlNumber("init_des", 0);
 
   // Attaques par défaut
-  xml += xmlString("attackname", data.attackname || "");
+  const firstWeapon = getFirstWeapon(data);
+  const firstWeaponName = firstWeapon ? firstWeapon.name : "";
+  
+  xml += xmlString("attackname", data.attackname || firstWeaponName || "");
   xml += xmlString("attackname2", data.attackname2 || "");
   xml += xmlString("attackname3", data.attackname3 || "");
-  xml += xmlString("attribute", data.attribute || "FOR");
+  
+  xml += xmlString("attribute", data.attribute || "DEX");
   xml += xmlString("attribute2", data.attribute2 || "DEX");
   xml += xmlString("attribute3", data.attribute3 || "FOR");
 
@@ -374,45 +382,60 @@ function convertJsonToXml() {
   xml += xmlNumber("mod_arme2", 0);
   xml += xmlNumber("mod_arme3", 0);
 
-  xml += xmlDice("DieField1", "d6");
+  const weaponDie = getWeaponDamageDie(firstWeaponName);
+  
+  xml += xmlDice("DieField1", weaponDie);
   xml += xmlDice("DieField2", "d4");
   xml += xmlDice("DieField3", "d6");
-  xml += xmlDice("dm_arme1", "d6");
+  xml += xmlDice("dm_arme1", weaponDie);
 
   // Argent
-  xml += xmlNumber("po", data.po || 0);
-  xml += xmlNumber("pa", data.pa || 0);
-  xml += xmlNumber("pc", data.pc || 0);
+  const gold = data.po ?? data.gold ?? data.gp ?? 0;
+  const silver = data.pa ?? data.silver ?? data.sp ?? 0;
+  const copper = data.pc ?? data.copper ?? data.cp ?? 0;
+  
+  xml += xmlNumber("po", gold);
+  xml += xmlNumber("pa", silver);
+  xml += xmlNumber("pc", copper);
 
-  xml += `    <coins>\n`;
-  xml += `      <slot1>\n`;
-  xml += `        <amount type="number">${Number(data.po || 0)}</amount>\n`;
-  xml += `        <name type="string">PO</name>\n`;
-  xml += `      </slot1>\n`;
-  xml += `      <slot2><amount type="number">0</amount></slot2>\n`;
-  xml += `      <slot3><amount type="number">0</amount></slot3>\n`;
-  xml += `      <slot4><amount type="number">0</amount></slot4>\n`;
-  xml += `      <slot5><amount type="number">0</amount></slot5>\n`;
-  xml += `      <slot6><amount type="number">0</amount></slot6>\n`;
-  xml += `    </coins>\n`;
+    xml += `    <coins>\n`;
+    xml += `      <slot1>\n`;
+    xml += `        <amount type="number">${Number(gold || 0)}</amount>\n`;
+    xml += `        <name type="string">PO</name>\n`;
+    xml += `      </slot1>\n`;
+    xml += `      <slot2>\n`;
+    xml += `        <amount type="number">${Number(silver || 0)}</amount>\n`;
+    xml += `        <name type="string">PA</name>\n`;
+    xml += `      </slot2>\n`;
+    xml += `      <slot3>\n`;
+    xml += `        <amount type="number">${Number(copper || 0)}</amount>\n`;
+    xml += `        <name type="string">PC</name>\n`;
+    xml += `      </slot3>\n`;
+    xml += `      <slot4><amount type="number">0</amount></slot4>\n`;
+    xml += `      <slot5><amount type="number">0</amount></slot5>\n`;
+    xml += `      <slot6><amount type="number">0</amount></slot6>\n`;
+    xml += `    </coins>\n`;
 
   // Encombrement
+  const gearSlotsTotal = data.gearSlotsTotal ?? 10;
+  const gearSlotsUsed = data.gearSlotsUsed ?? 0;
+  
   xml += xmlNumber("bonuspoids", 0);
-  xml += xmlNumber("encumbranceload", 0);
+  xml += xmlNumber("encumbranceload", gearSlotsUsed);
   xml += `    <encumbrance>\n`;
-  xml += `      <load type="number">0</load>\n`;
+  xml += `      <load type="number">${Number(gearSlotsUsed || 0)}</load>\n`;
   xml += `    </encumbrance>\n`;
-  xml += xmlNumber("poidsmax", 10);
-  xml += xmlNumber("poidsobjets", 0);
+  xml += xmlNumber("poidsmax", gearSlotsTotal);
+  xml += xmlNumber("poidsobjets", gearSlotsUsed);
   xml += xmlNumber("poidspieces", 0);
-  xml += xmlNumber("poidstotal", 0);
+  xml += xmlNumber("poidstotal", gearSlotsUsed);
 
   // Listes vides compatibles avec ta fiche
-  xml += `    <inventorylist />\n`;
-  xml += `    <languagelist />\n`;
+  xml += buildInventoryList(data.gear);
+  xml += buildLanguageList(data.languages);
   xml += `    <maincategorylist />\n`;
-  xml += `    <sorts />\n`;
-  xml += `    <talents />\n`;
+  xml += buildSpellsFromBonuses(data.bonuses, data.spellsKnown);
+  xml += buildTalents(data);
 
   // Champs divers présents dans ton ruleset
   xml += xmlFormattedText("FormattedText1", "");
