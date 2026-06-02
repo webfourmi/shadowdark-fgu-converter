@@ -95,7 +95,35 @@ const TITLE_TRANSLATIONS = {
   "Seer": "Voyant",
   "Sage": "Sage"
 };
+const ANCESTRY_TALENTS = {
+  "Human": ["HUMAIN"],
+  "Dwarf": ["NAIN"],
+  "Elf": ["ELFE"],
+  "Goblin": ["GOBELIN"],
+  "Half-Orc": ["DEMI-ORQUE"],
+  "Halfling": ["HALFELIN"]
+};
 
+const CLASS_TALENTS = {
+  "Fighter": [
+    "G/ Bête de somme",
+    "G/ Cran.",
+    "G/ Maîtrise des armes."
+  ],
+  "Wizard": [
+    "M/ Apprentissage des sorts",
+    "M/ Incantation."
+  ],
+  "Priest": [
+    "P/ Divinité.",
+    "P/ Incantation",
+    "P/ Renvoi des morts-vivants"
+  ],
+  "Thief": [
+    "V/ Attaque sournoise.",
+    "V/ Compétences de voleur"
+  ]
+};
 function translateValue(value, dictionary) {
   if (!value) return "";
 
@@ -251,30 +279,71 @@ function buildSpellsFromBonuses(bonuses, spellsKnownText) {
 
 function buildTalents(data) {
   const talents = [];
+  const alreadyAdded = new Set();
 
-  if (Array.isArray(data.levels)) {
-    data.levels.forEach(levelInfo => {
-      if (levelInfo.talentRolledName) {
-        talents.push({
-          name: levelInfo.talentRolledName,
-          text: levelInfo.talentRolledDesc || ""
-        });
-      }
+  function addTalent(name, text = "") {
+    if (!name) return;
+
+    const key = name.trim();
+
+    if (alreadyAdded.has(key)) return;
+
+    alreadyAdded.add(key);
+
+    talents.push({
+      name: key,
+      text: text || ""
     });
   }
 
+  // Talent d’ascendance
+  const ancestryTalents = ANCESTRY_TALENTS[data.ancestry] || [];
+
+  ancestryTalents.forEach(name => {
+    addTalent(name, "Talent d’ascendance.");
+  });
+
+  // Talents de classe de niveau 1
+  const classTalents = CLASS_TALENTS[data.class] || [];
+
+  classTalents.forEach(name => {
+    addTalent(name, "Talent de classe.");
+  });
+
+  // Talents obtenus aux niveaux, mais on évite les doublons techniques
+  if (Array.isArray(data.levels)) {
+    data.levels.forEach(levelInfo => {
+      const talentName = levelInfo.talentRolledName || "";
+      const talentDesc = levelInfo.talentRolledDesc || "";
+
+      // On ignore les choix qui sont en réalité déjà appliqués dans les stats
+      if (talentName.includes("Plus2") || talentName.includes("Stat")) {
+        return;
+      }
+
+      addTalent(talentName, talentDesc);
+    });
+  }
+
+  // Bonus talents, mais on ignore les bonus purement numériques déjà appliqués
   if (Array.isArray(data.bonuses)) {
     data.bonuses.forEach(bonus => {
-      if (bonus.sourceCategory === "Talent" && bonus.name) {
-        const alreadyExists = talents.some(talent => talent.name === bonus.name);
+      if (bonus.sourceCategory !== "Talent") return;
 
-        if (!alreadyExists) {
-          talents.push({
-            name: bonus.name,
-            text: bonus.bonusTo || bonus.bonusName || ""
-          });
-        }
-      }
+      const bonusName = bonus.name || "";
+      const bonusTo = bonus.bonusTo || "";
+      const bonusLabel = bonus.bonusName || "";
+
+      // Exemple : StatBonus INT:+2 déjà intégré dans les caractéristiques
+      if (bonusLabel === "StatBonus") return;
+      if (bonusTo.includes("INT:+2")) return;
+      if (bonusTo.includes("STR:+2")) return;
+      if (bonusTo.includes("DEX:+2")) return;
+      if (bonusTo.includes("CON:+2")) return;
+      if (bonusTo.includes("WIS:+2")) return;
+      if (bonusTo.includes("CHA:+2")) return;
+
+      addTalent(bonusName, bonusTo || bonusLabel);
     });
   }
 
