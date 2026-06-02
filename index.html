@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Convertisseur Shadowdark JSON vers XML FGU</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>Convertisseur Shadowdark</h1>
+
+    <p>
+      Colle ici le JSON du générateur Shadowdark.
+      Le programme produira un XML compatible avec ton ruleset Fantasy Grounds Unity.
+    </p>
+
+    <label for="jsonInput">JSON du personnage</label>
+    <textarea id="jsonInput" placeholder="Colle le JSON ici..."></textarea>
+
+    <div class="buttons">
+      <button onclick="convertJsonToXml()">Convertir en XML</button>
+      <button onclick="downloadXml()">Télécharger le XML</button>
+      <button onclick="clearAll()">Effacer</button>
+    </div>
+
+    <label for="xmlOutput">XML généré</label>
+    <textarea id="xmlOutput" readonly></textarea>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
