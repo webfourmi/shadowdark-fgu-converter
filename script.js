@@ -307,11 +307,16 @@ function convertJsonToXml() {
   const wisMod = getMod("WIS");
   const chaMod = getMod("CHA");
 
-  let xml = "";
-  xml += `<?xml version="1.0" encoding="utf-8"?>\n`;
-  xml += `<root version="5.1" dataversion="20260124" release="0|CoreRPG:7">\n`;
-  xml += `  <character>\n`;
+ const characterName = data.name || "Personnage sans nom";
 
+let xml = "";
+xml += `<?xml version="1.0" encoding="utf-8"?>\n`;
+xml += `<root version="5.1" dataversion="20260124" release="0|CoreRPG:7">\n`;
+
+// Nom du personnage pour l'écran d'import FGU
+xml += `  <name type="string">${escapeXml(characterName)}</name>\n`;
+
+xml += `  <character>\n`;
   // Champs techniques et listes vides
   xml += xmlNumber("_bonusincant", 0);
   xml += `    <abilitylist />\n`;
@@ -321,7 +326,7 @@ function convertJsonToXml() {
 const translatedClass = translateValue(data.class, CLASS_TRANSLATIONS);
 const translatedAlignment = translateValue(data.alignment, ALIGNMENT_TRANSLATIONS);
 
-xml += xmlString("name", data.name || "Personnage sans nom");
+xml += xmlString("name", characterName);
 xml += xmlString("ancestry", translatedAncestry);
 xml += xmlString("class", translatedClass);
 xml += xmlString("title", data.title || "");
