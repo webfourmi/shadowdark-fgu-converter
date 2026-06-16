@@ -16,14 +16,18 @@ const ANCESTRY_TRANSLATIONS = {
   "Elf": "Elfe",
   "Goblin": "Gobelin",
   "Half-Orc": "Demi-orc",
-  "Halfling": "Halfelin"
+  "Halfling": "Halfelin",
+  "Kobold": "Kobold",
+  
 };
 
 const CLASS_TRANSLATIONS = {
   "Fighter": "Guerrier",
   "Priest": "Prêtre",
   "Thief": "Voleur",
-  "Wizard": "Magicien"
+  "Wizard": "Magicien",
+  "Bard": "Barde",
+  "Ranger": "Rodeur"
 };
 
 const ALIGNMENT_TRANSLATIONS = {
@@ -101,10 +105,18 @@ const ANCESTRY_TALENTS = {
   "Elf": ["ELFE"],
   "Goblin": ["GOBELIN"],
   "Half-Orc": ["DEMI-ORQUE"],
-  "Halfling": ["HALFELIN"]
+  "Halfling": ["HALFELIN"],
+  "kobold": ["KOBOLD"]
 };
 
 const CLASS_TALENTS = {
+   "Bard": [
+    "B/Arts bardiques",
+    "B/ Magicien amateur.",
+    "B/ Présence.",
+    "B/ Prolifique"
+  ],
+  
   "Fighter": [
     "G/ Bête de somme",
     "G/ Cran.",
@@ -118,6 +130,10 @@ const CLASS_TALENTS = {
     "P/ Divinité.",
     "P/ Incantation",
     "P/ Renvoi des morts-vivants"
+  ],
+   "Ranger": [
+    "R/ Herboristerie.",
+    "R/ Intuitions"
   ],
   "Thief": [
     "V/ Attaque sournoise.",
