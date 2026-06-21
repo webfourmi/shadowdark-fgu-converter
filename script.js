@@ -38,7 +38,11 @@ const CLASS_TRANSLATIONS = {
 
   "Desert Rider": "Cavalier du désert",
   "Pit Fighter": "Combattant d’arène",
-  "Ras-Godai": "Ras-Godai"
+  "Ras-Godai": "Ras-Godai",
+  "Sea Wolf": "Loup de mer",
+  
+  "Seer": "Voyant",
+  
 };
 
 const ALIGNMENT_TRANSLATIONS = {
@@ -89,7 +93,39 @@ const BACKGROUND_TRANSLATIONS = {
   "Wolfchild": "Enfant-loup",
   "Healer": "Guérisseur",
   "Chosen": "Élu",
-  "Demonborn": "Né-démon"
+  "Demonborn": "Né-démon",
+    // Cursed Scroll 3 - Nordic Backgrounds
+  "Freed": "Affranchi",
+  "Displaced": "Déplacé",
+ 
+  "Criminal": "Criminel",
+  "Wanderer": "Errant",
+  "Farmer": "Agriculteur",
+  "Herdsman": "Éleveur",
+    "Hunter": "Chasseur",
+
+
+  "Fisher": "Pêcheur",
+  "Fisherman": "Pêcheur",
+    "Executor": "Exécuteur",
+ 
+  "Merchant": "Marchand",
+   "Craftsman": "Artisan",
+  "Bowyer": "Facteur d’arcs",
+  "Seer Apprentice": "Apprenti voyant",
+ 
+  "Shipwright": "Charpentier naval",
+
+  "Smith": "Forgeron",
+  "Far Traveler": "Grand voyageur",
+  "Skald": "Skald",
+
+  "Heroic Lineage": "Lignée héroïque",
+ 
+  "Noble Blood": "Sang noble",
+  
+  "Divine Blood": "Sang divin"
+ 
 };
 
 const TITLE_TRANSLATIONS = {
@@ -219,7 +255,73 @@ const TITLE_TRANSLATIONS = {
   "Demon Blade": "Lame démoniaque",
   "White Lotus": "Lotus blanc",
   "Black Lotus": "Lotus noir",
-  "Red Lotus": "Lotus rouge"
+  "Red Lotus": "Lotus rouge",
+
+    // Cursed Scroll 3 - Sea Wolf titles
+  "Free Folk": "Peuple libre",
+  "Povo Livre": "Peuple libre",
+  "Squire": "Écuyer",
+  "Escudeiro": "Écuyer",
+  "Thane": "Thane",
+  "Tano": "Thane",
+  "Jarl": "Jarl",
+  "King/Queen": "Roi/Reine",
+  "Rei/Rainha": "Roi/Reine",
+
+  "Scum": "Raclure",
+  "Escória": "Raclure",
+  "Raider": "Pilleur",
+  "Invasor": "Pilleur",
+  "Pillager": "Saccageur",
+  "Saqueador": "Saccageur",
+  "Conqueror": "Conquérant",
+  "Conquistador": "Conquérant",
+  "Usurper": "Usurpateur",
+  "Usurpador": "Usurpateur",
+
+  "Wanderer": "Errant",
+  "Errante": "Errant",
+  "Explorer": "Explorateur",
+  "Explorador": "Explorateur",
+  "Adventurer": "Aventurier",
+  "Aventureiro": "Aventurier",
+  "Renowned": "Renommé",
+  "Renomado": "Renommé",
+  "Legendary": "Légendaire",
+  "Lendário": "Légendaire",
+
+  // Cursed Scroll 3 - Seer titles
+  "Guide": "Guide",
+ 
+  "Enchanter": "Enchanteur",
+
+  "Rune Reader": "Lecteur de runes",
+ 
+  "The Wise": "Le Sage",
+ 
+  "Seer of Odin": "Vidente d’Odin",
+ 
+
+  "Hedge Witch": "Sorcier des haies",
+
+  "Whisperer": "Murmureur",
+
+  "Bone Reader": "Lecteur d’os",
+  
+  "The Feared": "Le Redouté",
+
+  "Seer of Loki": "Vidente de Loki",
+
+  "Diviner": "Devin",
+
+  "Chanter": "Chanteur rituel",
+  
+  "Star Reader": "Lecteur d’étoiles",
+ 
+  "The Blessed": "Le Béni",
+
+  "Seer of Freya": "Vidente de Freya"
+ 
 };
 
 const PATRON_TRANSLATIONS = {
@@ -304,6 +406,16 @@ const CLASS_TALENTS = {
     "RG/ Assassinat",
     "RG/ Pas de fumée",
     "RG/ Lotus noir"
+  ],
+   "Sea Wolf": [
+    "LM/ Marinier",
+    "LM/ Dieux antiques",
+    "LM/ Murs de boucliers"
+  ],
+  "Seer": [
+    "VI/ Prédestiné",
+    "VI/ Présage",
+    "VI/ Conjuration"
   ]
 };
 const LANGUAGE_TRANSLATIONS = {
@@ -352,6 +464,27 @@ const GEAR_TRANSLATIONS = {
   "Shuriken": "Shuriken",
   "Sling": "Fronde",
   "Whip": "Fouet",
+
+    // Cursed Scroll 3 - armes
+  "Handaxe": "Hachette",
+
+  "Staff": "Bâton",
+ 
+  // Cursed Scroll 3 - armures
+  "Round Shield": "Bouclier rond",
+
+
+  // Cursed Scroll 3 - embarcations
+  "Rowboat": "Barque à rames",
+
+  "Longship": "Drakkar",
+
+  "Galleon": "Galion",
+
+  "Raft": "Radeau",
+
+  "Sailboat": "Voilier",
+  
 
   // Armures
   "Leather armor": "Armure de cuir",
@@ -447,7 +580,43 @@ const SPELL_TRANSLATIONS = {
 
   "Deafen": "AVEUGLER/ASSOURDIR",
   "Blind/Deafen": "AVEUGLER/ASSOURDIR",
-  "Blindness/Deafness": "AVEUGLER/ASSOURDIR"
+  "Blindness/Deafness": "AVEUGLER/ASSOURDIR",
+
+    // Cursed Scroll 3 - Seer spells
+  "Chant": "CÂNTIQUE",
+    "Evoke Fury": "ÉVOQUER LA FUREUR",
+   "Potion": "POTION",
+   "Trance": "TRANSE",
+ 
+  "Fate": "DESTIN",
+  "Read the Runes": "LIRE LES RUNES",
+  "Sacrifice": "SACRIFICE",
+
+  "Soul Bind": "LIER L’ÂME",
+ 
+  "Hallucination": "HALLUCINATION",
+   "Raven": "CORBEAU",
+
+  "Banish": "BANNIR",
+ 
+  "Wolf Form": "FORME DE LOUP",
+ 
+  "Freya's Omen": "PRÉSAGE DE FREYA",
+  
+  "Odin's Wisdom": "SAGESSE D’ODIN",
+ 
+  "Loki's Trickery": "RUSE DE LOKI",
+ 
+  "Thor's Thunder": "TONNERRE DE THOR",
+ 
+
+  "World Tree": "ARBRE DU MONDE",
+ 
+  "Ragnarok": "RAGNAROK",
+  "World Serpent": "SERPENT DU MONDE",
+ 
+  "Valkyrie": "VALKYRIE",
+ 
 };
 
 const DEITY_TRANSLATIONS = {
@@ -461,6 +630,13 @@ const DEITY_TRANSLATIONS = {
   "Saint Terragnis": "Saint Terragnis",
   "St. Terragnis": "Saint Terragnis",
   "St Terragnis": "Saint Terragnis",
+    // Cursed Scroll 3 - Old Gods
+  "Odin": "Odin",
+  "Freya": "Freya",
+  "Loki": "Loki",
+  "Thor": "Thor",
+  "Old Gods": "Dieux anciens",
+  "Deuses Antigos": "Dieux anciens",
 
   "None": "",
   "No Deity": "",
@@ -769,6 +945,8 @@ function getWeaponDamageDie(weaponName) {
   if (name.includes("shuriken")) return "d4";
   if (name.includes("sling")) return "d4";
   if (name.includes("whip")) return "d4";
+    if (name.includes("handaxe") return "d6";
+  if (name.includes("round shield") return "d4";
 
   return "d6";
 }
