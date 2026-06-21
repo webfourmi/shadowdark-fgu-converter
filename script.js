@@ -18,6 +18,7 @@ const ANCESTRY_TRANSLATIONS = {
   "Half-Orc": "Demi-orc",
   "Halfling": "Halfelin",
   "Kobold": "Kobold",
+  "Kobold": "Kobold"
   
 };
 
@@ -27,7 +28,8 @@ const CLASS_TRANSLATIONS = {
   "Thief": "Voleur",
   "Wizard": "Magicien",
   "Bard": "Barde",
-  "Ranger": "Rodeur",
+  
+  "Ranger": "Rôdeur",
   
   "Knight of St. Ydris": "Chevalier de Saint Ydris",
   "Knight of St Ydris": "Chevalier de Saint Ydris",
@@ -168,8 +170,8 @@ const TITLE_TRANSLATIONS = {
   "Hexer": "Jeteuse de sorts",
   "Hag/Elder": "Sorcière ancienne",
   "Crone/Uncle": "Vieille/Oncle",
-  "Shaman": "Chaman",
-  "Conjurer": "Conjuratrice",
+  
+ 
   "Soothsayer": "Prophétesse",
   "Conduit": "Canal"
 };
@@ -190,7 +192,8 @@ const ANCESTRY_TALENTS = {
   "Goblin": ["GOBELIN"],
   "Half-Orc": ["DEMI-ORQUE"],
   "Halfling": ["HALFELIN"],
-  "kobold": ["KOBOLD"]
+  "kobold": ["KOBOLD"],
+  "Kobold": "Kobold"
 };
 
 const CLASS_TALENTS = {
@@ -553,8 +556,6 @@ function buildTalents(data) {
     addTalent(name, "Talent d’ascendance.");
   });
 
-  const translatedPatron = translateValue(data.patron, PATRON_TRANSLATIONS);
-  xml += xmlString("patron", translatedPatron);
 
   const classTalents = CLASS_TALENTS[data.class] || [];
   classTalents.forEach(name => {
@@ -719,6 +720,7 @@ xml += `  <character>\n`;
   const translatedBackground = translateValue(data.background, BACKGROUND_TRANSLATIONS);
   const translatedTitle = translateValue(data.title, TITLE_TRANSLATIONS);
   const translatedDeity = translateValue(data.deity, DEITY_TRANSLATIONS);
+  const translatedPatron = translateValue(data.patron, PATRON_TRANSLATIONS);
 
   const characterTitle = data.title || "";
   const characterDeity = data.deity || "";
@@ -732,6 +734,7 @@ xml += `  <character>\n`;
   xml += xmlString("appearance", data.appearance || "");
   xml += xmlNumber("level", data.level || 1);
   xml += xmlNumber("xp", data.XP ?? data.xp ?? 0);
+  xml += xmlString("patron", translatedPatron);
 
   // Défense et PV basiques
   const armorClass = data.ac ?? data.armorClass ?? data.AC ?? 10;
