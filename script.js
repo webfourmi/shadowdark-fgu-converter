@@ -1,4 +1,4 @@
-const APP_VERSION = "v2.0";
+const APP_VERSION = "v2.1";
 
 const statMapping = {
   STR: { raw: "formax", bonus: "modfor", final: "for" },
