@@ -1,4 +1,4 @@
-const APP_VERSION = "v1.9";
+const APP_VERSION = "v2.0";
 
 const statMapping = {
   STR: { raw: "formax", bonus: "modfor", final: "for" },
@@ -34,7 +34,11 @@ const CLASS_TRANSLATIONS = {
   "Knight of St. Ydris": "Chevalier de Saint Ydris",
   "Knight of St Ydris": "Chevalier de Saint Ydris",
   "Warlock": "Occultiste",
-  "Witch": "Sorcière"
+  "Witch": "Sorcière",
+
+  "Desert Rider": "Cavalier du désert",
+  "Pit Fighter": "Combattant d’arène",
+  "Ras-Godai": "Ras-Godai"
 };
 
 const ALIGNMENT_TRANSLATIONS = {
@@ -173,7 +177,49 @@ const TITLE_TRANSLATIONS = {
   
  
   "Soothsayer": "Prophétesse",
-  "Conduit": "Canal"
+  "Conduit": "Canal",
+    // Desert Rider
+  "Outrider": "Éclaireur monté",
+  "Sandrunner": "Coureur des sables",
+  "Trailblazer": "Ouvreur de piste",
+  "Swift Wind": "Vent vif",
+  "Stormrunner": "Coureur d’orage",
+  "Bandit": "Bandit",
+  "Robber": "Brigand",
+  "Raider": "Pillard",
+  "Scourge": "Fléau",
+  "Bandit King/Queen": "Roi/Reine des bandits",
+  "Rat": "Rat",
+  "Fox": "Renard",
+  "Wolf": "Loup",
+  "Tiger": "Tigre",
+  "Dragon": "Dragon",
+
+  // Pit Fighter
+  "Rookie": "Débutant",
+  "Gladiator": "Gladiateur",
+  "Hero": "Héros",
+  "Champion": "Champion",
+  "Legend": "Légende",
+  "Ruffian": "Brute",
+  "Brawler": "Bagarreur",
+  "Heel": "Salaud",
+  "Villain": "Scélérat",
+  "Underdog": "Outsider",
+  "Dark Horse": "Cheval noir",
+  "Wild Card": "Électron libre",
+  "Victor": "Vainqueur",
+
+  // Ras-Godai
+  "Mirror Path": "Voie du miroir",
+  "Shadow Path": "Voie de l’ombre",
+  "Fire Path": "Voie du feu",
+  "Monk": "Moine",
+  "Master": "Maître",
+  "Demon Blade": "Lame démoniaque",
+  "White Lotus": "Lotus blanc",
+  "Black Lotus": "Lotus noir",
+  "Red Lotus": "Lotus rouge"
 };
 
 const PATRON_TRANSLATIONS = {
@@ -241,6 +287,23 @@ const CLASS_TALENTS = {
   "Witch": [
     "SS/ Familier",
     "SS/ Incantation de sorcière"
+  ],
+    "Desert Rider": [
+    "CD/ Charge",
+    "CD/ Monture"
+  ],
+
+  "Pit Fighter": [
+    "CA/ Panache",
+    "CA/ Implacable",
+    "CA/ Dernier sursaut",
+    "CA/ Inarrêtable"
+  ],
+
+  "Ras-Godai": [
+    "RG/ Assassinat",
+    "RG/ Pas de fumée",
+    "RG/ Lotus noir"
   ]
 };
 const LANGUAGE_TRANSLATIONS = {
@@ -278,11 +341,40 @@ const GEAR_TRANSLATIONS = {
   "Crossbow": "Arbalète",
   "Javelin": "Javeline",
 
+    // Cursed Scroll 2 - nouvelles armes
+  "Blowgun": "Sarbacane",
+  "Bolas": "Bolas",
+  "Morningstar": "Morgenstern",
+  "Pike": "Pique",
+  "Razor chain": "Chaîne rasoir",
+  "Razor Chain": "Chaîne rasoir",
+  "Scimitar": "Cimeterre",
+  "Shuriken": "Shuriken",
+  "Sling": "Fronde",
+  "Whip": "Fouet",
+
   // Armures
   "Leather Armor": "Armure de cuir",
   "Chainmail": "Cotte de mailles",
   "Plate Mail": "Harnois",
   "Shield": "Bouclier",
+
+    // Cursed Scroll 2 - montures et équipement de monture
+  "Camel": "Chameau",
+  "Camel, silver": "Chameau argenté",
+  "Donkey": "Âne",
+  "Elephant": "Éléphant",
+  "Horse": "Cheval",
+  "Horse, war": "Cheval de guerre",
+  "Scrag": "Scrag",
+  "Scrag, war": "Scrag de guerre",
+
+  "Armor, leather": "Armure de cuir",
+  "Armor, chainmail": "Cotte de mailles",
+  "Armor, plate": "Armure de plates",
+  "Armor, mithral": "Armure de mithral",
+  "Saddle": "Selle",
+  "Wagon": "Chariot",
 
   // Équipement courant
   "Backpack": "Sac à dos",
@@ -667,6 +759,15 @@ function getWeaponDamageDie(weaponName) {
   if (name.includes("spear")) return "d6";
   if (name.includes("bow")) return "d6";
   if (name.includes("crossbow")) return "d6";
+  if (name.includes("blowgun")) return "d1";
+  if (name.includes("bolas")) return "d1";
+  if (name.includes("morningstar")) return "d6";
+  if (name.includes("pike")) return "d10";
+  if (name.includes("razor chain")) return "d6";
+  if (name.includes("scimitar")) return "d6";
+  if (name.includes("shuriken")) return "d4";
+  if (name.includes("sling")) return "d4";
+  if (name.includes("whip")) return "d4";
 
   return "d6";
 }
