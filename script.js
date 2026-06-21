@@ -372,8 +372,8 @@ const ANCESTRY_TALENTS = {
   "Goblin": ["GOBELIN"],
   "Half-Orc": ["DEMI-ORQUE"],
   "Halfling": ["HALFELIN"],
-  "kobold": ["KOBOLD"],
-  "Kobold": "Kobold"
+  "Kobold": ["KOBOLD"],
+  "kobold": ["KOBOLD"]
 };
 
 const CLASS_TALENTS = {
@@ -670,6 +670,27 @@ const SPELL_TRANSLATIONS = {
   "World Serpent": "SERPENT DU MONDE",
  
   "Valkyrie": "VALKYRIE",
+    // Cursed Scroll 4 - Druid spells
+  "Breath": "SOUFFLE",
+  "Instill": "INSTILLER",
+  "Oxidize": "OXYDER",
+  "Whisperwind": "MURMURE DU VENT",
+
+  "Barkskin": "PEAU D’ÉCORCE",
+  "Befriend": "APPRIVOISER",
+  "Magnetize": "MAGNÉTISER",
+  "Truespeech": "LANGAGE VRAI",
+
+  "Alchemy": "ALCHIMIE",
+  "Anima": "ANIMA",
+  "Locusts": "SAUTERELLES",
+  "Treeshape": "FORME D’ARBRE",
+
+  "Mycelium": "MYCÉLIUM",
+  "Summon Storm": "CONVOQUER LA TEMPÊTE",
+
+  "Earthquake": "SÉISME",
+  "Naming": "NOMMER"
  
 };
 
@@ -980,16 +1001,18 @@ function getFirstWeapon(data) {
 function getWeaponDamageDie(weaponName) {
   const name = String(weaponName || "").toLowerCase();
 
-  if (name.includes("dagger")) return "d4";
-  if (name.includes("staff")) return "d4";
-  if (name.includes("club")) return "d4";
-  if (name.includes("shortsword")) return "d6";
-  if (name.includes("sword")) return "d8";
-  if (name.includes("axe")) return "d8";
-  if (name.includes("mace")) return "d6";
-  if (name.includes("spear")) return "d6";
-  if (name.includes("bow")) return "d6";
-  if (name.includes("crossbow")) return "d6";
+  // Cursed Scroll 4 - armes d’obsidienne
+  if (name.includes("obsidian dagger") || name.includes("dagger, obsidian")) return "d6";
+  if (name.includes("obsidian spear") || name.includes("spear, obsidian")) return "d8";
+  if (name.includes("obsidian club") || name.includes("club, obsidian")) return "d6";
+  if (name.includes("boomerang")) return "d4";
+  if (name.includes("spear-thrower") || name.includes("spear thrower") || name.includes("atlatl")) return "d4";
+
+  // Cursed Scroll 3
+  if (name.includes("handaxe") || name.includes("machadinha")) return "d6";
+  if (name.includes("round shield") || name.includes("escudo redondo")) return "d4";
+
+  // Cursed Scroll 2
   if (name.includes("blowgun")) return "d1";
   if (name.includes("bolas")) return "d1";
   if (name.includes("morningstar")) return "d6";
@@ -999,13 +1022,24 @@ function getWeaponDamageDie(weaponName) {
   if (name.includes("shuriken")) return "d4";
   if (name.includes("sling")) return "d4";
   if (name.includes("whip")) return "d4";
-    if (name.includes("handaxe") return "d6";
-  if (name.includes("round shield") return "d4";
-    if (name.includes("obsidian dagger") || name.includes("dagger, obsidian")) return "d6";
-  if (name.includes("obsidian spear") || name.includes("spear, obsidian")) return "d8";
-  if (name.includes("obsidian club") || name.includes("club, obsidian")) return "d6";
-  if (name.includes("boomerang")) return "d4";
-  if (name.includes("spear-thrower") || name.includes("spear thrower") || name.includes("atlatl")) return "d4";
+
+  // Armes de base
+  if (name.includes("crossbow")) return "d6";
+  if (name.includes("longbow")) return "d8";
+  if (name.includes("shortbow")) return "d4";
+  if (name.includes("bow")) return "d6";
+
+  if (name.includes("dagger")) return "d4";
+  if (name.includes("staff")) return "d4";
+  if (name.includes("club")) return "d4";
+  if (name.includes("shortsword")) return "d6";
+  if (name.includes("greatsword")) return "d12";
+  if (name.includes("longsword")) return "d8";
+  if (name.includes("sword")) return "d8";
+  if (name.includes("greataxe")) return "d12";
+  if (name.includes("axe")) return "d8";
+  if (name.includes("mace")) return "d6";
+  if (name.includes("spear")) return "d6";
 
   return "d6";
 }
@@ -1061,8 +1095,7 @@ xml += `  <character>\n`;
   const translatedDeity = translateValue(data.deity, DEITY_TRANSLATIONS);
   const translatedPatron = translateValue(data.patron, PATRON_TRANSLATIONS);
 
-  const characterTitle = data.title || "";
-  const characterDeity = data.deity || "";
+  
 
   xml += xmlString("ancestry", translatedAncestry);
   xml += xmlString("class", translatedClass);
