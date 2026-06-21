@@ -354,6 +354,7 @@ const GEAR_TRANSLATIONS = {
   "Whip": "Fouet",
 
   // Armures
+  "Leather armor": "Armure de cuir",
   "Leather Armor": "Armure de cuir",
   "Chainmail": "Cotte de mailles",
   "Plate Mail": "Harnois",
