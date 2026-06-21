@@ -1,4 +1,4 @@
-const APP_VERSION = "v1.8";
+const APP_VERSION = "v1.9";
 
 const statMapping = {
   STR: { raw: "formax", bonus: "modfor", final: "for" },
@@ -27,7 +27,12 @@ const CLASS_TRANSLATIONS = {
   "Thief": "Voleur",
   "Wizard": "Magicien",
   "Bard": "Barde",
-  "Ranger": "Rodeur"
+  "Ranger": "Rodeur",
+  
+  "Knight of St. Ydris": "Chevalier de Saint Ydris",
+  "Knight of St Ydris": "Chevalier de Saint Ydris",
+  "Warlock": "Occultiste",
+  "Witch": "Sorcière"
 };
 
 const ALIGNMENT_TRANSLATIONS = {
@@ -58,7 +63,27 @@ const BACKGROUND_TRANSLATIONS = {
   "Minstrel": "Ménestrel",
   "Scholar": "Érudit",
   "Noble": "Noble",
-  "Chirurgeon": "Chirurgien"
+  "Chirurgeon": "Chirurgien",
+  "Hermit": "Ermite",
+  "Outcast": "Paria",
+  "Woodborn": "Né des bois",
+  "Amnesiac": "Amnésique",
+  "Haunted": "Hanté",
+  "Fugitive": "Fugitif",
+  "Feytouched": "Touché par les fées",
+  "Witchborn": "Né-sorcier",
+  "Forager": "Glaneur",
+  "Redeemer": "Rédempteur",
+  "Marked": "Marqué",
+  "Sacrifice": "Sacrifié",
+  "Marooned": "Abandonné",
+  "Fallen": "Déchu",
+  "Drawn": "Appelé",
+  "Ascetic": "Ascète",
+  "Wolfchild": "Enfant-loup",
+  "Healer": "Guérisseur",
+  "Chosen": "Élu",
+  "Demonborn": "Né-démon"
 };
 
 const TITLE_TRANSLATIONS = {
@@ -97,8 +122,67 @@ const TITLE_TRANSLATIONS = {
   "Conjurer": "Invocateur",
   "Necromancer": "Nécromancien",
   "Seer": "Voyant",
-  "Sage": "Sage"
+  "Sage": "Sage",
+  
+    // Knight of St. Ydris
+  "Arbiter": "Arbitre",
+  "Enforcer": "Exécuteur",
+  "Knight Marshal": "Chevalier-maréchal",
+  "Judge": "Juge",
+  "Justicar": "Justicier",
+  "Traitor": "Traître",
+  "Fallen": "Déchu",
+  "Oathbreaker": "Briseur de serment",
+  "Blackguard": "Chevalier félon",
+  "Demonlord": "Seigneur démon",
+  "Brother/Sister": "Frère/Sœur",
+  "Exorcist": "Exorciste",
+  "Reverend Knight": "Chevalier révérend",
+  "Inquisitor": "Inquisiteur",
+  "Grand Inquisitor": "Grand inquisiteur",
+
+  // Warlock
+  "Favored": "Favori",
+  "Herald": "Héraut",
+  "Eminent": "Éminent",
+  "Exalted": "Exalté",
+  "Incarnation": "Incarnation",
+  "Marked": "Marqué",
+  "Zealot": "Zélote",
+  "Occultist": "Occultiste",
+  "Champion": "Champion",
+  "Harbinger": "Présage",
+  "Chosen": "Élu",
+  "Channeler": "Canaliseur",
+  "Prophesied": "Prophétisé",
+  "Transcendent": "Transcendant",
+  "Avatar": "Avatar",
+
+  // Witch
+  "Fortune Teller": "Diseuse de bonne aventure",
+  "Far Seer": "Voyant lointain",
+  "Prophet": "Prophète",
+  "Wise One": "Sage",
+  "Baba": "Baba",
+  "Whisperer": "Murmureuse",
+  "Hexer": "Jeteuse de sorts",
+  "Hag/Elder": "Sorcière ancienne",
+  "Crone/Uncle": "Vieille/Oncle",
+  "Shaman": "Chaman",
+  "Conjurer": "Conjuratrice",
+  "Soothsayer": "Prophétesse",
+  "Conduit": "Canal"
 };
+
+const PATRON_TRANSLATIONS = {
+  "Almazzat": "Almazzat",
+  "Kytheros": "Kytheros",
+  "Shune the Vile": "Shune la Vile",
+  "Mugdulblub": "Mugdulblub",
+  "Titania": "Titania",
+  "The Willowman": "L’Homme-Saule"
+};
+
 const ANCESTRY_TALENTS = {
   "Human": ["HUMAIN"],
   "Dwarf": ["NAIN"],
@@ -138,6 +222,22 @@ const CLASS_TALENTS = {
   "Thief": [
     "V/ Attaque sournoise.",
     "V/ Compétences de voleur"
+  ],
+    "Knight of St. Ydris": [
+    "C/ Possession démoniaque",
+    "C/ Incantation de chevalier"
+  ],
+  "Knight of St Ydris": [
+    "C/ Possession démoniaque",
+    "C/ Incantation de chevalier"
+  ],
+  "Warlock": [
+    "S/ Patron",
+    "S/ Don du patron"
+  ],
+  "Witch": [
+    "SS/ Familier",
+    "SS/ Incantation de sorcière"
   ]
 };
 const LANGUAGE_TRANSLATIONS = {
@@ -452,6 +552,9 @@ function buildTalents(data) {
   ancestryTalents.forEach(name => {
     addTalent(name, "Talent d’ascendance.");
   });
+
+  const translatedPatron = translateValue(data.patron, PATRON_TRANSLATIONS);
+  xml += xmlString("patron", translatedPatron);
 
   const classTalents = CLASS_TALENTS[data.class] || [];
   classTalents.forEach(name => {
