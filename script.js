@@ -1,4 +1,4 @@
-const APP_VERSION = "v2.1";
+const APP_VERSION = "v2.2";
 
 const statMapping = {
   STR: { raw: "formax", bonus: "modfor", final: "for" },
@@ -42,6 +42,7 @@ const CLASS_TRANSLATIONS = {
   "Sea Wolf": "Loup de mer",
   
   "Seer": "Voyant",
+  "Basilisk Warrior": "Guerrier basilic"
   
 };
 
@@ -320,7 +321,38 @@ const TITLE_TRANSLATIONS = {
  
   "The Blessed": "Le Béni",
 
-  "Seer of Freya": "Vidente de Freya"
+  "Seer of Freya": "Vidente de Freya",
+    // Cursed Scroll 4 - Basilisk Warrior titles
+  "Stone Warrior": "Guerrier de pierre",
+  "Strong Stone": "Pierre forte",
+  "Sharp Stone": "Pierre tranchante",
+  "Silent Stone": "Pierre silencieuse",
+  "Protector": "Protecteur",
+  "Slayer": "Tueur",
+  "Watcher": "Guetteur",
+  "Sun Serpent": "Serpent du soleil",
+  "Moon Serpent": "Serpent de lune",
+  "Sky Serpent": "Serpent du ciel",
+  "Amber Basilisk": "Basilic d’ambre",
+  "Obsidian Basilisk": "Basilic d’obsidienne",
+  "Sapphire Basilisk": "Basilic de saphir",
+
+  // Cursed Scroll 4 - Ranger titles
+  "Wanderer": "Errant",
+  "Hood": "Encapuchonné",
+  "Stranger": "Étranger",
+  "Strider": "Marcheur",
+  "Outlaw": "Hors-la-loi",
+  "Wayfarer": "Voyageur",
+  "Warden": "Gardien",
+  "Fugitive": "Fugitif",
+  "Outlander": "Exilé des terres sauvages",
+  "Guardian": "Protecteur",
+  "Exile": "Exilé",
+  "Recluse": "Reclus",
+  "Sentinel": "Sentinelle",
+  "Pariah": "Paria",
+  "Hermit": "Ermite"
  
 };
 
@@ -416,6 +448,11 @@ const CLASS_TALENTS = {
     "VI/ Prédestiné",
     "VI/ Présage",
     "VI/ Conjuration"
+  ],
+  "Basilisk Warrior": [
+    "GB/ Sang de basilic",
+    "GB/ Regard pétrifiant",
+    "GB/ Peau de pierre"
   ]
 };
 const LANGUAGE_TRANSLATIONS = {
@@ -469,6 +506,17 @@ const GEAR_TRANSLATIONS = {
   "Handaxe": "Hachette",
 
   "Staff": "Bâton",
+    // Cursed Scroll 4 - nouvelles armes
+  "Boomerang": "Boomerang",
+  "Club, obsidian": "Gourdin d’obsidienne",
+  "Obsidian club": "Gourdin d’obsidienne",
+  "Dagger, obsidian": "Dague d’obsidienne",
+  "Obsidian dagger": "Dague d’obsidienne",
+  "Spear, obsidian": "Lance d’obsidienne",
+  "Obsidian spear": "Lance d’obsidienne",
+  "Spear-thrower": "Propulseur",
+  "Spear Thrower": "Propulseur",
+  "Atlatl": "Propulseur",
  
   // Cursed Scroll 3 - armures
   "Round Shield": "Bouclier rond",
@@ -502,6 +550,12 @@ const GEAR_TRANSLATIONS = {
   "Horse, war": "Cheval de guerre",
   "Scrag": "Scrag",
   "Scrag, war": "Scrag de guerre",
+    // Cursed Scroll 4 - voyage jungle
+  "Canoe": "Canoë",
+  "Raft": "Radeau",
+  "Void Craft": "Nef du Vide",
+  "Lightning bolt cannon": "Canon d’éclair",
+  "Black caltrops": "Chausse-trappes noires",
 
   "Armor, leather": "Armure de cuir",
   "Armor, chainmail": "Cotte de mailles",
@@ -947,6 +1001,11 @@ function getWeaponDamageDie(weaponName) {
   if (name.includes("whip")) return "d4";
     if (name.includes("handaxe") return "d6";
   if (name.includes("round shield") return "d4";
+    if (name.includes("obsidian dagger") || name.includes("dagger, obsidian")) return "d6";
+  if (name.includes("obsidian spear") || name.includes("spear, obsidian")) return "d8";
+  if (name.includes("obsidian club") || name.includes("club, obsidian")) return "d6";
+  if (name.includes("boomerang")) return "d4";
+  if (name.includes("spear-thrower") || name.includes("spear thrower") || name.includes("atlatl")) return "d4";
 
   return "d6";
 }
