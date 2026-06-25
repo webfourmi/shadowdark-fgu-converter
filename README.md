@@ -19,6 +19,7 @@ Importe actuellement :
 - Langues
 - Talents
 - Sorts
+- maj pour recuperer et traduire les classes des scrolls
 
 ## Utilisation
 
