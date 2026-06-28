@@ -379,19 +379,19 @@ const ANCESTRY_TALENTS = {
 const CLASS_TALENTS = {
    "Bard": [
     "B/Arts bardiques",
-    "B/ Magicien amateur.",
-    "B/ Présence.",
+    "B/ Magicien amateur",
+    "B/ Présence",
     "B/ Prolifique"
   ],
   
   "Fighter": [
     "G/ Bête de somme",
-    "G/ Cran.",
-    "G/ Maîtrise des armes."
+    "G/ Cran",
+    "G/ Maîtrise des armes"
   ],
   "Wizard": [
     "M/ Apprentissage des sorts",
-    "M/ Incantation."
+    "M/ Incantation"
   ],
   "Priest": [
     "P/ Divinité.",
@@ -399,16 +399,16 @@ const CLASS_TALENTS = {
     "P/ Renvoi des morts-vivants"
   ],
    "Ranger": [
-    "R/ Herboristerie.",
-    "R/ Intuitions"
+    "R/ Herboristerie",
+    "R/ Intuition"
   ],
   "Thief": [
-    "V/ Attaque sournoise.",
+    "V/ Attaque sournoise",
     "V/ Compétences de voleur"
   ],
     "Knight of St. Ydris": [
-    "C/ Possession démoniaque",
-    "C/ Incantation de chevalier"
+    "CY/ Possession démoniaque",
+    "CY/ Incantation de chevalier"
   ],
   "Knight of St Ydris": [
     "C/ Possession démoniaque",
@@ -428,10 +428,10 @@ const CLASS_TALENTS = {
   ],
 
   "Pit Fighter": [
-    "CA/ Panache",
-    "CA/ Implacable",
-    "CA/ Dernier sursaut",
-    "CA/ Inarrêtable"
+    "CA/ Acharné",
+    "CA/ Floraison",
+    "CA/ Dernier Rempart",
+    "CA/ Implacable"
   ],
 
   "Ras-Godai": [
@@ -440,8 +440,8 @@ const CLASS_TALENTS = {
     "RG/ Lotus noir"
   ],
    "Sea Wolf": [
-    "LM/ Marinier",
-    "LM/ Dieux antiques",
+    "LM/ Marin",
+    "LM/ Dieux anciens",
     "LM/ Murs de boucliers"
   ],
   "Seer": [
