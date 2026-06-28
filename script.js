@@ -545,7 +545,7 @@ const GEAR_TRANSLATIONS = {
   "Camel": "Chameau",
   "Camel, silver": "Chameau argenté",
   "Donkey": "Âne",
-  "Elephant": "Éléphant",
+  "Elephant": "Eléphant",
   "Horse": "Cheval",
   "Horse, war": "Cheval de guerre",
   "Scrag": "Scrag",
